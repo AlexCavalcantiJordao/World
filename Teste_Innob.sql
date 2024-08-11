@@ -54,3 +54,20 @@ select * from camisa order by tamanho;
 
 -- Resolvendo problemas com ORDER BY....
 select * from camisa order by cast(tamanho as char);
+
+-- Operador UNION - Unir dois ou mais resultados de consultas.....
+
+-- Retornar nomes de livros e preços dos livros. Caso o preço do livro seja igual ou superior a R$ 60,00, mostrar a mensagem "Livro Caro" em uma coluna à direita no resultado da consulta.
+-- Caso ao contrário, mostrar a mensagem "Preço Razoável" ordernado por preço, do mais barato para o mais caro....
+-- Exemplo 01:
+select Nome_Livro Livro, Preco_Livro Preco, 'Livro Caro' Resultado from tbl_Livros where Preco_Livro >= 60.00
+union
+select Nome_Livro Livro, Preco_Livro Preco, 'Livro Caro' Resultado from tbl_Livros where Preco_Livro < 60.00
+order by Preco;
+
+-- Exemplo 02:
+-- Retornar nomes de Livros, preços e datas de publicação dos Livros. Caso a data de publicação seja anterior 1 15/04/2012, mostrar o preço acrescido de 15% em seu valor. Caso o livro custe mais de 65 reais, descontar 10% em seu valor.
+select Nome_Livro Livro, Data_Pub 'Data de Publicação', Preco_Livro 'Preço Normal', Preco_Livro * 0.90 'Preço Ajustado' from tbl_Livros
+where Preco_Livro > 65.00
+union
+select Nome_Livro Livro, Data_Pub 'Data de Publicação', Preco_Livro 'Preco Normal', Preco_Livro * 1.15 'Preço Ajustado' from tbl_Livros where Data_Pub < '20120415';
