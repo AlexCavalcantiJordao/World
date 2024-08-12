@@ -71,3 +71,49 @@ select Nome_Livro Livro, Data_Pub 'Data de Publicação', Preco_Livro 'Preço No
 where Preco_Livro > 65.00
 union
 select Nome_Livro Livro, Data_Pub 'Data de Publicação', Preco_Livro 'Preco Normal', Preco_Livro * 1.15 'Preço Ajustado' from tbl_Livros where Data_Pub < '20120415';
+
+-- Como agendar Eventos no MySQL - Programação para Bancos de Dados....
+show variables like 'event%';
+
+set global event_scheduler = on;
+
+select * from tbl_editoras;
+
+# Exemplo 01 - Eventos:
+delimiter //
+create event insert_imediato on
+schedule at current_timestamp()
+do 
+begin
+	insert into tbl_editora(NomeEditora)
+	values ('Bosón Books');
+end //
+delimiter ;
+
+show events from biblioteca;
+
+-- Exemplo 02 - Eventos:
+delimiter //
+create event insert_em_um_mes
+on schedule at now() + interval 1 month
+do begin
+	insert into tbl_editoras(NomeEditora)
+	values('Tech Books Brazil');
+end //
+delimiter ;
+
+-- Exemplo 03 - Eventos:
+delimiter //
+create event insert_mensal
+on schedule every 1 month
+starts '2020-12-15'
+ends '2021-09-15'
+do begin
+	insert into tbl_editora(NomeEditora)
+	values ('Bosón Books');
+end//
+delimiter ;
+
+drop event insert_em_um_mes;
+
+-- O que são Subconsultas SQL (Subqueries) em Bancos de Dados....
